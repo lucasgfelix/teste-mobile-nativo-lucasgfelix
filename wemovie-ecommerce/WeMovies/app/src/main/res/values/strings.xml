@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">WeMovies</string>
+    <string name="title_home">Home</string>
+    <string name="title_carrinho">Carrinho (%1$d)</string>
+    <string name="title_perfil">Perfil</string>
+    <string name="movie_image_desc">Imagem ilustrativa do filme</string>
+    <string name="item_price">R$%1$.2f</string>
+    <string name="item_subtotal">Subtotal:\nR$ %.2f</string>
+    <string name="text_welcome">Bem-vindo a</string>
+    <string name="subtitle_welcome">WeMovies</string>
+    <string name="carrinho_de_compras">Carrinho de compras</string>
+    <string name="total">Total</string>
+    <string name="valor">R$ 0,00</string>
+    <string name="finalizar_pedido">Finalizar Pedido</string>
+    <string name="mais_vendidos">Mais vendidos</string>
+    <string name="text_maiores_sucessos">Maiores sucessos do WeMovies</string>
+    <string name="title_films">Homem Aranha: No Way Home</string>
+    <string name="data_filmes">Adicionado em 14/06/2024</string>
+    <string name="preco2">13:39</string>
+    <string name="adicionar_ao_carrinho">ADICIONAR AO CARRINHO</string>
+    <string name="success_date">Compra realizada em %1$s</string>
+    <string name="_0">0</string>
+    <string name="home_aranha_title">Home Aranha</string>
+    <string name="voltar_home">Voltar à Home</string>
+    <string name="compra_realizada">Compra realizada com sucesso!</string>
+    <string name="compra_realizada_date">Compra realizada em 14/06/2024 às 15:12</string>
+    <string name="voltar_home2">Voltar à Home</string>
+    <string name="text_error">Parece que não há nada por aqui :(</string>
+
+</resources>
