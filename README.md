@@ -3,8 +3,12 @@
 - Pontos avaliados:
   - Criação do novo projeto
   - Visão sistêmica
+ 
+ # Video Demonstrativo do Projeto
+https://github.com/user-attachments/assets/60ccb139-94fc-4ed9-9a2d-3a9a8723f892
 
 # Desafio de Estruturação de Projeto Apps Nativo (Android ou iOS)
+
 
 O desafio consiste na criação de um aplicativo mobile de e-commerce simplificado do zero, onde o candidato terá que criar um fluxo com três módulos/telas.
 
