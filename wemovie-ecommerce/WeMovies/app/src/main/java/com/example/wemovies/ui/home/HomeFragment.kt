@@ -2,6 +2,7 @@ package com.example.wemovies.ui.home
 
 import android.os.Bundle
 import android.view.*
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,18 +21,58 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        setupRecyclerView()
-        homeViewModel.loadMovies()
 
+        setupRecyclerView()
+        setupObservers()
+
+        homeViewModel.loadMovies() // Carregar filmes inicialmente
+
+        binding.reloadButton.setOnClickListener {
+            homeViewModel.loadMovies() // Recarregar filmes ao clicar no botão
+        }
+
+        return binding.root
+    }
+
+    private fun setupRecyclerView() {
+        movieAdapter = MovieAdapter { movieId, addToCart ->
+            homeViewModel.updateCart(movieId, addToCart)
+        }
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = movieAdapter
+        }
+    }
+
+    private fun setupObservers(): RelativeLayout {
         // Observar o estado de carregamento (loading)
         homeViewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            // Controlar a visibilidade do ProgressBar
             if (isLoading) {
-                binding.recyclerView.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.GONE
+                binding.emptyStateLayoutHome.visibility = View.GONE
+                binding.progressBar.visibility = View.VISIBLE
             } else {
                 binding.progressBar.visibility = View.GONE
+            }
+        }
+        // Observar o estado de erro
+        homeViewModel.error.observe(viewLifecycleOwner) { hasError ->
+            if (hasError) {
+                binding.recyclerView.visibility = View.GONE
+                binding.emptyStateLayoutHome.visibility = View.VISIBLE
+                binding.emptyStateTextViewHome.text = getString(R.string.text_error)
+            }
+        }
+
+        // Observar a lista de filmes
+        homeViewModel.movies.observe(viewLifecycleOwner) { movies ->
+            if (movies.isEmpty()) {
+                toggleEmptyState(true)
+            } else {
+                toggleEmptyState(false)
+                movieAdapter.submitList(movies)
             }
         }
 
@@ -53,13 +94,13 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun setupRecyclerView() {
-        movieAdapter = MovieAdapter { movieId, addToCart ->
-            homeViewModel.updateCart(movieId, addToCart)
-        }
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = movieAdapter
+    private fun toggleEmptyState(isEmpty: Boolean) {
+        if (isEmpty) {
+            binding.recyclerView.visibility = View.GONE
+            binding.emptyStateLayoutHome.visibility = View.VISIBLE
+        } else {
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.emptyStateLayoutHome.visibility = View.GONE
         }
     }
 

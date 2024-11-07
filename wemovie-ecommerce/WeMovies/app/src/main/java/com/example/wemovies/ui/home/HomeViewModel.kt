@@ -27,24 +27,31 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val movieApiService = MovieApiService.create()
 
-    private val _loading = MutableLiveData<Boolean>(false) // LiveData para controle do loading
+    private val _loading = MutableLiveData<Boolean>(false)
     val loading: LiveData<Boolean> get() = _loading
 
+    private val _error = MutableLiveData<Boolean>(false)
+    val error: LiveData<Boolean> get() = _error
 
     // Função para carregar filmes da API
     fun loadMovies() {
         _loading.value = true
+        _error.value = false
+
         viewModelScope.launch {
             try {
                 val response = movieApiService.getMovies()
                 if (response.isSuccessful) {
-                    _movies.value = response.body()?.products
-                    Log.d("HomeViewModel", "Movies loaded: ${_movies.value?.size}")
+                    val movieList = response.body()?.products ?: emptyList()
+                    _movies.value = movieList
+                    Log.d("HomeViewModel", "Movies loaded: ${movieList.size}")
                 } else {
                     Log.e("HomeViewModel", "Erro ao carregar filmes: ${response.message()}")
+                    _error.value = true
                 }
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Erro na requisição: ${e.message}")
+                _error.value = true
             } finally {
                 _loading.value = false
             }
@@ -85,7 +92,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         if (newCount > 0) {
             currentCart[movieId] = newCount
         } else {
-            currentCart[movieId] = 0
             currentCart.remove(movieId)
         }
 
@@ -116,7 +122,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private fun updateTotalCartCount() {
         _cartTotalCount.value = _cartCounts.value?.values?.sum() ?: 0
     }
-
 
     fun clearCart() {
         _cartCounts.value = emptyMap()

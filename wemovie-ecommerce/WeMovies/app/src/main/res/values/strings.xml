@@ -26,5 +26,6 @@
     <string name="compra_realizada_date">Compra realizada em 14/06/2024 às 15:12</string>
     <string name="voltar_home2">Voltar à Home</string>
     <string name="text_error">Parece que não há nada por aqui :(</string>
+    <string name="recarregar_pagina">Recarregar Pagina</string>
 
 </resources>
